@@ -1,12 +1,29 @@
 import React from "react";
 import "./App.css";
-import { Login } from "./components/Auth";
+import { Router } from "@reach/router";
+
+import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+
+import { HomePage, LoginPage } from "./pages";
+import { PrimaryLayout } from "./components/Global/PrimaryLayout";
+
+const theme = createMuiTheme({
+  palette: {
+    type: "dark",
+    primary: { main: "#5c04d1" }
+  }
+});
 
 function App() {
   return (
-    <div>
-      <h1>Frontend</h1> <Login />
-    </div>
+    <ThemeProvider theme={theme}>
+      <PrimaryLayout>
+        <Router>
+          <HomePage path="/" />
+          <LoginPage path="/login" />
+        </Router>
+      </PrimaryLayout>
+    </ThemeProvider>
   );
 }
 
