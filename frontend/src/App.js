@@ -4,7 +4,7 @@ import { Router } from "@reach/router";
 
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 
-import { HomePage, LoginPage } from "./pages";
+import { NotesListPage, LoginPage } from "./pages";
 import { PrimaryLayout } from "./components/Global/PrimaryLayout";
 
 const theme = createMuiTheme({
@@ -19,7 +19,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <PrimaryLayout>
         <Router>
-          <HomePage path="/" />
+          <NotesListPage path="/" />
           <LoginPage path="/login" />
         </Router>
       </PrimaryLayout>

@@ -1,15 +1,7 @@
 import React from "react";
 import { Link } from "@reach/router";
 
-import {
-  makeStyles,
-  Paper,
-  AppBar,
-  Grid,
-  GridItem,
-  Typography,
-  Button
-} from "@material-ui/core";
+import { makeStyles, Paper, Grid, Typography, Button } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   heading: {
@@ -17,10 +9,10 @@ const useStyles = makeStyles(theme => ({
     textTransform: "none"
   },
   mainBg: {
-    position: "static",
-    height: "100vh",
+    position: "relative",
     width: "100vw",
-    borderRadius: "0"
+    borderRadius: "0",
+    boxShadow: theme.shadows[0]
   },
   appBar: {
     position: "relative"
