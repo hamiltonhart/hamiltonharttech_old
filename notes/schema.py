@@ -35,10 +35,13 @@ class CreateNote(graphene.Mutation):
     class Arguments:
         title = graphene.String(required=True)
         body_text = graphene.String(required=True)
+        summary = graphene.String()
 
     @login_required
-    def mutate(self, info, title, body_text):
+    def mutate(self, info, title, body_text, summary):
         note = Note(title=title, body_text=body_text)
+        if summary:
+            note.summary = summary
         note.save()
         return CreateNote(note=note)
 
@@ -50,9 +53,10 @@ class UpdateNote(graphene.Mutation):
         id = graphene.Int(required=True)
         title = graphene.String()
         body_text = graphene.String()
+        summary = graphene.String()
 
     @login_required
-    def mutate(self, info, id, title=None, body_text=None):
+    def mutate(self, info, id, title=None, body_text=None, summary=None):
         try:
             note = Note.objects.get(id=id)
         except:
@@ -62,6 +66,8 @@ class UpdateNote(graphene.Mutation):
             note.title = title
         if body_text:
             note.body_text = body_text
+        if summary:
+            note.summary = summary
 
         note.save()
         return UpdateNote(note=note)
