@@ -68,7 +68,7 @@ class UpdateNote(graphene.Mutation):
 
 
 class DeleteNote(graphene.Mutation):
-    note = graphene.Field(NoteType)
+    id = graphene.Int()
 
     class Arguments:
         id = graphene.Int(required=True)
@@ -81,10 +81,10 @@ class DeleteNote(graphene.Mutation):
             raise GraphQLError("A valid Note ID was not provided.")
 
         note.delete()
-        return note
+        return DeleteNote(id=id)
 
 
 class Mutation(graphene.ObjectType):
     create_note = CreateNote.Field()
-    udpate_note = UpdateNote.Field()
+    update_note = UpdateNote.Field()
     delete_note = DeleteNote.Field()
