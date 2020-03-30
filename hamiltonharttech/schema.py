@@ -4,10 +4,12 @@ from graphene_django import DjangoObjectType
 
 # import app schemas
 import users.schema
+import notes.schema
 
 
 class Query(
     users.schema.Query,
+    notes.schema.Query,
     graphene.ObjectType
 ):
     pass
@@ -15,6 +17,7 @@ class Query(
 
 class Mutation(
     users.schema.Mutation,
+    notes.schema.Mutation,
     graphene.ObjectType
 ):
     token_auth = graphql_jwt.ObtainJSONWebToken.Field()
