@@ -12,6 +12,10 @@ django = "*"
 django-cors-headers = "*"
 graphene-django = "*"
 django-graphql-jwt = "*"
+psycopg2 = "*"
+dj-database-url = "*"
+gunicorn = "*"
+whitenoise = "*"
 
 [requires]
 python_version = "3.7"

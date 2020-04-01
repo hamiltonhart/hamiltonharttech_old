@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { navigate } from "@reach/router";
 
-import { useMutation, useQuery } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/react-hooks";
 import { CREATE_NOTE, NOTES_QUERY } from "../../gql";
 
 import {
@@ -14,6 +15,7 @@ import {
 export const CreateNote = () => {
   const [title, setTitle] = useState("");
   const [bodyText, setBodyText] = useState("");
+  const [summary, setSummary] = useState("");
 
   const [createNote, { error }] = useMutation(CREATE_NOTE);
 
@@ -22,8 +24,10 @@ export const CreateNote = () => {
     createNote({
       variables: {
         title,
-        bodyText
+        bodyText,
+        summary
       },
+      refetchQueries: [{ query: NOTES_QUERY }],
       onCompleted: createCompleted()
     });
   };
@@ -31,6 +35,8 @@ export const CreateNote = () => {
   const createCompleted = () => {
     setTitle("");
     setBodyText("");
+    setSummary("");
+    navigate("/");
   };
 
   return (
@@ -38,7 +44,7 @@ export const CreateNote = () => {
       <Grid
         component="form"
         container
-        spacing={6}
+        spacing={3}
         direction="column"
         onSubmit={e => handleSubmit(e)}
       >
@@ -48,7 +54,19 @@ export const CreateNote = () => {
               label="Note Title"
               variant="outlined"
               value={title}
+              required
               onChange={e => setTitle(e.target.value)}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl fullWidth>
+            <TextField
+              label="Summary"
+              variant="outlined"
+              value={summary}
+              required
+              onChange={e => setSummary(e.target.value)}
             />
           </FormControl>
         </Grid>
@@ -60,12 +78,13 @@ export const CreateNote = () => {
               rows="20"
               multiline
               value={bodyText}
+              required
               onChange={e => setBodyText(e.target.value)}
             />
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <Button type="submit" variant="contained">
+          <Button type="submit" variant="contained" color="primary">
             Create Note
           </Button>
         </Grid>

@@ -5,7 +5,7 @@ export const NOTES_QUERY = gql`
     notes {
       id
       title
-      bodyText
+      summary
     }
   }
 `;
@@ -15,6 +15,7 @@ export const NOTE_QUERY = gql`
     note(id: $id) {
       id
       title
+      summary
       bodyText
     }
   }
@@ -23,11 +24,12 @@ export const NOTE_QUERY = gql`
 // Mutations
 
 export const CREATE_NOTE = gql`
-  mutation($title: String!, $bodyText: String!) {
-    createNote(title: $title, bodyText: $bodyText) {
+  mutation($title: String!, $bodyText: String!, $summary: String) {
+    createNote(title: $title, bodyText: $bodyText, summary: $summary) {
       note {
         id
         title
+        summary
         bodyText
       }
     }
@@ -35,11 +37,12 @@ export const CREATE_NOTE = gql`
 `;
 
 export const UPDATE_NOTE = gql`
-  mutation($id: Int!, $title: String, $bodyText: String) {
-    updateNote(id: $id, title: $title, bodyText: $bodyText) {
+  mutation($id: Int!, $title: String, $bodyText: String, $summary: String) {
+    updateNote(id: $id, title: $title, bodyText: $bodyText, summary: $summary) {
       note {
         id
         title
+        summary
         bodyText
       }
     }

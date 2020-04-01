@@ -2,17 +2,16 @@ import React from "react";
 import "./App.css";
 import { Router } from "@reach/router";
 
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/core";
+import theme from "./styling/theme";
 
-import { NotesListPage, LoginPage } from "./pages";
+import {
+  NotesListPage,
+  NoteDetailPage,
+  LoginPage,
+  CreateNotePage
+} from "./pages";
 import { PrimaryLayout } from "./components/Global/PrimaryLayout";
-
-const theme = createMuiTheme({
-  palette: {
-    type: "dark",
-    primary: { main: "#5c04d1" }
-  }
-});
 
 function App() {
   return (
@@ -20,6 +19,8 @@ function App() {
       <PrimaryLayout>
         <Router>
           <NotesListPage path="/" />
+          <NoteDetailPage path="/notes/:noteId" />
+          <CreateNotePage path="/notes/create" />
           <LoginPage path="/login" />
         </Router>
       </PrimaryLayout>

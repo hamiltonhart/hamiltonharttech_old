@@ -1,0 +1,1 @@
+web: gunicorn hamiltonharttech.wsgi —-log-file -
