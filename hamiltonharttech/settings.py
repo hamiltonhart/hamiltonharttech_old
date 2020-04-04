@@ -10,27 +10,31 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
-import json
 import os
+import environ
+
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sensitive_info = os.path.join(BASE_DIR, "django-config.json")
-
-with open(sensitive_info) as config_file:
-    config = json.load(config_file)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config["secret_key"]
+SECRET_KEY = env.str('SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost',
+                 '127.0.0.1', 'hhtech.herokuapp.com']
 
 
 # Application definition
@@ -62,6 +66,7 @@ GRAPHENE = {
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -70,8 +75,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-# CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ORIGIN_WHITELIST = (
     "http://localhost:3000",
@@ -108,12 +111,32 @@ WSGI_APPLICATION = 'hamiltonharttech.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'mydatabase.sqlite3',
+        }
     }
-}
+else:
+    try:
+        env.str('DB_NAME')
+        env.str('DB_USER')
+        env.str('DB_PASS')
+        db_from_env = dj_database_url.config()
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                'NAME': env.str('DB_NAME'),
+                'USER': env.str('DB_USER'),
+                'PASSWORD': env.str('DB_PASS'),
+                'HOST': 'localhost',
+                'PORT': '5432',
+            }
+        }
+        DATABASES['default'].update(db_from_env)
+    except:
+        print("Provide PSQL environment variables in .env")
 
 
 # Password validation
@@ -153,9 +176,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-STATICFILES_DIRS = (
-    os.path.join(os.path.join(BASE_DIR, 'frontend'), 'build', 'static'),
-)
+REACT_APP_DIR = os.path.join(BASE_DIR, 'frontend')
+
+STATICFILES_DIRS = [
+    os.path.join(REACT_APP_DIR, 'build', 'static'),
+]
 
 AUTH_USER_MODEL = 'users.CustomUser'
