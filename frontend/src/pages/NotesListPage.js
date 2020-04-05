@@ -6,19 +6,25 @@ import { makeStyles, Typography, Button, Paper } from "@material-ui/core";
 
 import { NOTES_QUERY } from "../gql";
 import { useQuery } from "@apollo/react-hooks";
+import { IS_LOGGED_IN } from "../index.js";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   listContainer: {
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
   },
   listItem: {
     marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2)
-  }
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 export const NotesListPage = () => {
   const { data, loading, error } = useQuery(NOTES_QUERY);
+  const {
+    data: loggedInData,
+    loading: loggedInLoading,
+    error: loggedInError,
+  } = useQuery(IS_LOGGED_IN);
 
   const classes = useStyles();
 
@@ -28,19 +34,21 @@ export const NotesListPage = () => {
         Notes
       </Typography>
       <Paper className={classes.listContainer} elevation={0}>
-        <Button
-          color="primary"
-          variant="contained"
-          size="large"
-          component={Link}
-          to="/notes/create"
-        >
-          Add Note
-        </Button>
+        {loggedInData && loggedInData.isLoggedIn && (
+          <Button
+            color="primary"
+            variant="contained"
+            size="large"
+            component={Link}
+            to="/notes/create"
+          >
+            Add Note
+          </Button>
+        )}
         {loading && <h1>Loading...</h1>}
         {error && <h1>{error.message}</h1>}
         {data &&
-          data.notes.map(note => (
+          data.notes.map((note) => (
             <NoteListItem
               key={note.id}
               note={note}

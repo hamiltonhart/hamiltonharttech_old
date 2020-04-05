@@ -9,7 +9,7 @@ import {
   TextField,
   FormControl,
   Button,
-  Grid
+  Grid,
 } from "@material-ui/core";
 
 export const CreateNote = () => {
@@ -19,16 +19,16 @@ export const CreateNote = () => {
 
   const [createNote, { error }] = useMutation(CREATE_NOTE);
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     createNote({
       variables: {
         title,
         bodyText,
-        summary
+        summary,
       },
       refetchQueries: [{ query: NOTES_QUERY }],
-      onCompleted: createCompleted()
+      onCompleted: createCompleted(),
     });
   };
 
@@ -46,7 +46,7 @@ export const CreateNote = () => {
         container
         spacing={3}
         direction="column"
-        onSubmit={e => handleSubmit(e)}
+        onSubmit={(e) => handleSubmit(e)}
       >
         <Grid item xs={12}>
           <FormControl fullWidth>
@@ -55,7 +55,7 @@ export const CreateNote = () => {
               variant="outlined"
               value={title}
               required
-              onChange={e => setTitle(e.target.value)}
+              onChange={(e) => setTitle(e.target.value)}
             />
           </FormControl>
         </Grid>
@@ -66,7 +66,7 @@ export const CreateNote = () => {
               variant="outlined"
               value={summary}
               required
-              onChange={e => setSummary(e.target.value)}
+              onChange={(e) => setSummary(e.target.value)}
             />
           </FormControl>
         </Grid>
@@ -79,7 +79,7 @@ export const CreateNote = () => {
               multiline
               value={bodyText}
               required
-              onChange={e => setBodyText(e.target.value)}
+              onChange={(e) => setBodyText(e.target.value)}
             />
           </FormControl>
         </Grid>

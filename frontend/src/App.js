@@ -9,7 +9,7 @@ import {
   NotesListPage,
   NoteDetailPage,
   LoginPage,
-  CreateNotePage
+  CreateNotePage,
 } from "./pages";
 import { PrimaryLayout } from "./components/Global/PrimaryLayout";
 

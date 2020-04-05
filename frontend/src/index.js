@@ -16,7 +16,7 @@ const cache = new InMemoryCache();
 // const uri = "https://hhtech.herokuapp.com/graphql/";
 const uri = "http://localhost:8000/graphql/";
 
-const client = new ApolloClient({
+export const client = new ApolloClient({
   cache,
   uri,
   fetchOptions: {

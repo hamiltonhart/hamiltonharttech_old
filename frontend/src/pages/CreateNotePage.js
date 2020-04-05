@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Typography, Paper } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 
 import { CreateNote } from "../components/Notes";
 
@@ -10,7 +10,7 @@ export const CreateNotePage = () => {
       <Typography variant="h3" align="center" gutterBottom>
         Create Note
       </Typography>
-      <CreateNote />;
+      <CreateNote />
     </>
   );
 };
