@@ -15,23 +15,23 @@ const cache = new InMemoryCache();
 
 const client = new ApolloClient({
   cache,
-  uri: "http://127.0.0.1:8000/graphql/",
+  uri: "https://hhtech.herokuapp.com/graphql/",
   fetchOptions: {
-    credentials: "include"
+    credentials: "include",
   },
-  request: operation => {
+  request: (operation) => {
     const token = localStorage.getItem("authToken") || "";
     operation.setContext({
       headers: {
-        Authorization: `JWT ${token}`
-      }
+        Authorization: `JWT ${token}`,
+      },
     });
   },
   clientState: {
     defaults: {
-      isLoggedIn: !!localStorage.getItem("authToken")
-    }
-  }
+      isLoggedIn: !!localStorage.getItem("authToken"),
+    },
+  },
 });
 
 export const IS_LOGGED_IN = gql`
