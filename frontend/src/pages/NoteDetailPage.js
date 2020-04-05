@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { navigate } from "@reach/router";
+import { IS_LOGGED_IN } from "../index";
 import {
   makeStyles,
   Typography,
   Paper,
   Button,
-  ClickAwayListener
+  ClickAwayListener,
 } from "@material-ui/core";
 
 import { useQuery, useMutation } from "@apollo/react-hooks";
@@ -13,22 +14,22 @@ import { NOTE_QUERY, DELETE_NOTE, NOTES_QUERY } from "../gql";
 import { useToggle } from "../utilities";
 import { EditNote } from "../components/Notes";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   subheading: {
     padding: theme.spacing(2),
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
-    backgroundColor: theme.palette.primary.main
+    backgroundColor: theme.palette.primary.main,
   },
   noteContainer: {
     maxWidth: "800px",
     marginLeft: "auto",
-    marginRight: "auto"
+    marginRight: "auto",
   },
   button: {
     marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2)
-  }
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 export const NoteDetailPage = ({ noteId }) => {
@@ -36,8 +37,10 @@ export const NoteDetailPage = ({ noteId }) => {
   const [deleteActive, setDeleteActive] = useState(false);
 
   const { data, loading, error } = useQuery(NOTE_QUERY, {
-    variables: { id: currentId }
+    variables: { id: currentId },
   });
+
+  const { data: loggedInData } = useQuery(IS_LOGGED_IN);
 
   const [deleteNote, { error: deleteError }] = useMutation(DELETE_NOTE);
 
@@ -46,12 +49,12 @@ export const NoteDetailPage = ({ noteId }) => {
   const ReactMarkdown = require("react-markdown");
   const classes = useStyles();
 
-  const handleDelete = e => {
+  const handleDelete = (e) => {
     e.preventDefault();
     deleteNote({
       variables: { id: currentId },
       refetchQueries: [{ query: NOTES_QUERY }],
-      onCompleted: onDeleteCompleted()
+      onCompleted: onDeleteCompleted(),
     });
   };
 
@@ -80,43 +83,49 @@ export const NoteDetailPage = ({ noteId }) => {
               </Typography>
               <Paper className={classes.noteContainer} elevation={0}>
                 <ReactMarkdown source={data.note.bodyText} />
-                {!deleteActive && (
-                  <Button
-                    className={classes.button}
-                    size="large"
-                    variant="outlined"
-                    color="error"
-                    onClick={() => setDeleteActive(true)}
-                  >
-                    Delete
-                  </Button>
-                )}
-                {deleteActive && (
-                  <ClickAwayListener onClickAway={() => setDeleteActive(false)}>
+                {loggedInData && loggedInData.isLoggedIn && (
+                  <>
+                    {!deleteActive && (
+                      <Button
+                        className={classes.button}
+                        size="large"
+                        variant="outlined"
+                        color="error"
+                        onClick={() => setDeleteActive(true)}
+                      >
+                        Delete
+                      </Button>
+                    )}
+                    {deleteActive && (
+                      <ClickAwayListener
+                        onClickAway={() => setDeleteActive(false)}
+                      >
+                        <Button
+                          className={classes.button}
+                          size="large"
+                          color="warning"
+                          variant="contained"
+                          onClick={(e) => handleDelete(e)}
+                        >
+                          Delete
+                        </Button>
+                      </ClickAwayListener>
+                    )}
                     <Button
                       className={classes.button}
+                      color="primary"
+                      variant="outlined"
                       size="large"
-                      color="warning"
-                      variant="contained"
-                      onClick={e => handleDelete(e)}
+                      onClick={editToggle}
                     >
-                      Delete
+                      Edit
                     </Button>
-                  </ClickAwayListener>
+                  </>
                 )}
-                <Button
-                  className={classes.button}
-                  color="primary"
-                  variant="outlined"
-                  size="large"
-                  onClick={editToggle}
-                >
-                  Edit
-                </Button>
               </Paper>
             </>
           )}
-          {editOn && (
+          {loggedInData && loggedInData.isLoggedIn && editOn && (
             <>
               <EditNote note={data.note} toggle={editToggle} />
             </>
