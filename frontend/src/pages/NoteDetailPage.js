@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
   },
   noteContainer: {
-    maxWidth: "800px",
+    maxWidth: "600px",
     marginLeft: "auto",
     marginRight: "auto",
     marginBottom: theme.spacing(6),
