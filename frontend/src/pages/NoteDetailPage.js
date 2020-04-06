@@ -15,20 +15,40 @@ import { useToggle } from "../utilities";
 import { EditNote } from "../components/Notes";
 
 const useStyles = makeStyles((theme) => ({
+  heading: {
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+  },
   subheading: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
+    fontStyle: "italic",
     backgroundColor: theme.palette.primary.main,
   },
   noteContainer: {
     maxWidth: "800px",
     marginLeft: "auto",
     marginRight: "auto",
+    marginBottom: theme.spacing(6),
+    padding: "8px 16px",
+    "& pre": {
+      backgroundColor: "black",
+      padding: theme.spacing(2),
+      overflow: "scroll",
+      marginRight: theme.spacing(2),
+      fontSize: ".85em",
+    },
+    "& a": {
+      color: theme.palette.primary.light,
+      textDecoration: "none",
+    },
   },
   button: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
   },
 }));
 
@@ -69,7 +89,12 @@ export const NoteDetailPage = ({ noteId }) => {
       {error && <h3>{error.message}</h3>}
       {data && (
         <>
-          <Typography variant="h3" align="center" gutterBottom>
+          <Typography
+            className={classes.heading}
+            variant="h4"
+            align="center"
+            gutterBottom
+          >
             {`${data.note.title}`}
           </Typography>
           {!editOn && (
