@@ -7,13 +7,13 @@ import {
   CardActions,
   CardContent,
   Button,
+  Grid,
 } from "@material-ui/core";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
+    height: "175px",
     "&:hover": {
       boxShadow: theme.shadows[9],
     },
@@ -22,6 +22,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "20px",
     marginBottom: theme.spacing(1),
     textDecoration: "none",
+  },
+  content: {
+    height: "100px",
+    overflow: "hidden",
   },
   cardBody: {
     fontSize: "14px",
@@ -38,17 +42,8 @@ export const NoteListItem = ({ note }) => {
   const classes = useStyles();
 
   return (
-    // <Paper
-    //   className={classes.root}
-    //   elevation={6}
-    //   component={Link}
-    //   to={`/notes/${note.id}`}
-    // >
-    //   <Typography variant="h4">{note.title}</Typography>
-    //   <Typography>{note.summary}</Typography>
-    // </Paper>
-    <Card className={classes.root} elevation={4}>
-      <CardContent>
+    <Card item className={classes.root} elevation={4}>
+      <CardContent className={classes.content}>
         <Typography
           className={classes.title}
           color="primary"

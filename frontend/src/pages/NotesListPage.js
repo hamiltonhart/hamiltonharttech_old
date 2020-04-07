@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "@reach/router";
 import { NoteListItem } from "../components/Notes";
 
-import { makeStyles, Typography, Button, Paper } from "@material-ui/core";
+import { makeStyles, Typography, Button, Paper, Grid } from "@material-ui/core";
 
 import { NOTES_QUERY } from "../gql";
 import { useQuery } from "@apollo/react-hooks";
@@ -10,7 +10,8 @@ import { IS_LOGGED_IN } from "../index.js";
 
 const useStyles = makeStyles((theme) => ({
   listContainer: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(3),
+    flexGrow: "1",
   },
   listItem: {
     marginTop: theme.spacing(2),
@@ -20,11 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const NotesListPage = () => {
   const { data, loading, error } = useQuery(NOTES_QUERY);
-  const {
-    data: loggedInData,
-    loading: loggedInLoading,
-    error: loggedInError,
-  } = useQuery(IS_LOGGED_IN);
+  const { data: loggedInData } = useQuery(IS_LOGGED_IN);
 
   const classes = useStyles();
 
@@ -33,29 +30,33 @@ export const NotesListPage = () => {
       <Typography variant="h3" align="center">
         Notes
       </Typography>
-      <Paper className={classes.listContainer} elevation={0}>
+      <Grid container className={classes.listContainer} spacing={2}>
         {loggedInData && loggedInData.isLoggedIn && (
-          <Button
-            color="primary"
-            variant="contained"
-            size="large"
-            component={Link}
-            to="/notes/create"
-          >
-            Add Note
-          </Button>
+          <Grid item xs={12}>
+            <Button
+              color="primary"
+              variant="contained"
+              size="large"
+              component={Link}
+              to="/notes/create"
+            >
+              Add Note
+            </Button>
+          </Grid>
         )}
         {loading && <h1>Loading...</h1>}
         {error && <h1>{error.message}</h1>}
         {data &&
           data.notes.map((note) => (
-            <NoteListItem
-              key={note.id}
-              note={note}
-              className={classes.listItem}
-            />
+            <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
+              <NoteListItem
+                key={note.id}
+                note={note}
+                className={classes.listItem}
+              />
+            </Grid>
           ))}
-      </Paper>
+      </Grid>
     </div>
   );
 };
