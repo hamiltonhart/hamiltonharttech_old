@@ -13,6 +13,7 @@ import { useQuery, useMutation } from "@apollo/react-hooks";
 import { NOTE_QUERY, DELETE_NOTE, NOTES_QUERY } from "../gql";
 import { useToggle } from "../utilities";
 import { EditNote } from "../components/Notes";
+import { Error } from "../components/Global";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -86,7 +87,8 @@ export const NoteDetailPage = ({ noteId }) => {
   return (
     <>
       {loading && <h1>Loading...</h1>}
-      {error && <h3>{error.message}</h3>}
+      {error && <Error errorMessage={error.message} />}
+      {deleteError && <Error errorMessage={deleteError.message} />}
       {data && (
         <>
           <Typography

@@ -32,7 +32,7 @@ export const NotesListPage = () => {
         Notes
       </Typography>
       <Grid container className={classes.listContainer} spacing={2}>
-        {loggedInError && <Error errorMessage={loggedInError} />}
+        {loggedInError && <Error errorMessage={loggedInError.message} />}
         {loggedInData && loggedInData.isLoggedIn && (
           <Grid item xs={12}>
             <Button
@@ -47,7 +47,7 @@ export const NotesListPage = () => {
           </Grid>
         )}
         {loading && <h1>Loading...</h1>}
-        {error && <Error errorMessage={error} />}
+        {error && <Error errorMessage={error.message} />}
         {data &&
           data.notes.map((note) => (
             <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>

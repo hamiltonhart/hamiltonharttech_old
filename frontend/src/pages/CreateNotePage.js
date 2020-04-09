@@ -6,6 +6,7 @@ import { IS_LOGGED_IN } from "../index.js";
 import { Typography } from "@material-ui/core";
 
 import { CreateNote } from "../components/Notes";
+import { Error } from "../components/Global";
 
 export const CreateNotePage = () => {
   const { data, loading, error } = useQuery(IS_LOGGED_IN);
@@ -15,6 +16,7 @@ export const CreateNotePage = () => {
       <Typography variant="h3" align="center" gutterBottom>
         Create Note
       </Typography>
+      {error && <Error errorMessage={error.message} />}
       {data && data.isLoggedIn ? (
         <CreateNote />
       ) : (
