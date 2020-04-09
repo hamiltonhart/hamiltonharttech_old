@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "@reach/router";
+import { Error } from "../components/Global";
 import { NoteListItem } from "../components/Notes";
 
 import { makeStyles, Typography, Button, Paper, Grid } from "@material-ui/core";
@@ -21,16 +22,17 @@ const useStyles = makeStyles((theme) => ({
 
 export const NotesListPage = () => {
   const { data, loading, error } = useQuery(NOTES_QUERY);
-  const { data: loggedInData } = useQuery(IS_LOGGED_IN);
+  const { data: loggedInData, error: loggedInError } = useQuery(IS_LOGGED_IN);
 
   const classes = useStyles();
 
   return (
-    <div>
+    <>
       <Typography variant="h3" align="center">
         Notes
       </Typography>
       <Grid container className={classes.listContainer} spacing={2}>
+        {loggedInError && <Error errorMessage={loggedInError} />}
         {loggedInData && loggedInData.isLoggedIn && (
           <Grid item xs={12}>
             <Button
@@ -45,7 +47,7 @@ export const NotesListPage = () => {
           </Grid>
         )}
         {loading && <h1>Loading...</h1>}
-        {error && <h1>{error.message}</h1>}
+        {error && <Error errorMessage={error} />}
         {data &&
           data.notes.map((note) => (
             <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
@@ -57,6 +59,6 @@ export const NotesListPage = () => {
             </Grid>
           ))}
       </Grid>
-    </div>
+    </>
   );
 };
