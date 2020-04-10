@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "@reach/router";
-import { Error } from "../components/Global";
+import { Error, Loading } from "../components/Global";
 import { NoteListItem } from "../components/Notes";
 
-import { makeStyles, Typography, Button, Paper, Grid } from "@material-ui/core";
+import { makeStyles, Typography, Button, Grid } from "@material-ui/core";
 
 import { NOTES_QUERY } from "../gql";
 import { useQuery } from "@apollo/react-hooks";
@@ -17,6 +17,11 @@ const useStyles = makeStyles((theme) => ({
   listItem: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
+  },
+  createButton: {
+    display: "flex",
+    justifyContent: "flex-end",
+    margin: "0 0 20px 0",
   },
 }));
 
@@ -34,7 +39,7 @@ export const NotesListPage = () => {
       <Grid container className={classes.listContainer} spacing={2}>
         {loggedInError && <Error errorMessage={loggedInError.message} />}
         {loggedInData && loggedInData.isLoggedIn && (
-          <Grid item xs={12}>
+          <Grid className={classes.createButton} item xs={12}>
             <Button
               color="primary"
               variant="contained"
@@ -46,7 +51,12 @@ export const NotesListPage = () => {
             </Button>
           </Grid>
         )}
-        {loading && <h1>Loading...</h1>}
+
+        {loading && (
+          <Grid item xs={12}>
+            <Loading />
+          </Grid>
+        )}
         {error && <Error errorMessage={error.message} />}
         {data &&
           data.notes.map((note) => (
