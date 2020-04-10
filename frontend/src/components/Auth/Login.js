@@ -7,21 +7,22 @@ import {
   TextField,
   Button,
   FormControl,
-  Typography
+  Typography,
 } from "@material-ui/core";
 
 import { LOGIN_MUT } from "../../gql";
 import { useMutation, useApolloClient } from "@apollo/react-hooks";
+import { navigate } from "@reach/router";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(8),
     padding: theme.spacing(4),
-    boxShadow: theme.shadows[3]
+    boxShadow: theme.shadows[3],
   },
   heading: {
-    textTransform: "uppercase"
-  }
+    textTransform: "uppercase",
+  },
 }));
 
 export const Login = () => {
@@ -33,11 +34,20 @@ export const Login = () => {
 
   const classes = useStyles();
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await tokenAuth({ variables: { username, password } });
+    const res = await tokenAuth({
+      variables: { username, password },
+      onCompleted: loginCompleted(),
+    });
     localStorage.setItem("authToken", res.data.tokenAuth.token);
     client.writeData({ data: { isLoggedIn: true } });
+  };
+
+  const loginCompleted = () => {
+    setUsername("");
+    setPassword("");
+    navigate("/");
   };
 
   return (
@@ -47,7 +57,7 @@ export const Login = () => {
         container
         spacing={1}
         direction="column"
-        onSubmit={e => handleSubmit(e)}
+        onSubmit={(e) => handleSubmit(e)}
       >
         <Grid item>
           <Typography
@@ -64,7 +74,7 @@ export const Login = () => {
             <TextField
               label="Username"
               variant="outlined"
-              onChange={e => setUsername(e.target.value)}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </FormControl>
         </Grid>
@@ -74,7 +84,7 @@ export const Login = () => {
               type="password"
               label="Password"
               variant="outlined"
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </FormControl>
         </Grid>
