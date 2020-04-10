@@ -14,6 +14,8 @@ import { LOGIN_MUT } from "../../gql";
 import { useMutation, useApolloClient } from "@apollo/react-hooks";
 import { navigate } from "@reach/router";
 
+import { Error } from "../Global";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(8),
@@ -38,10 +40,10 @@ export const Login = () => {
     e.preventDefault();
     const res = await tokenAuth({
       variables: { username, password },
-      onCompleted: loginCompleted(),
     });
     localStorage.setItem("authToken", res.data.tokenAuth.token);
     client.writeData({ data: { isLoggedIn: true } });
+    navigate("/");
   };
 
   const loginCompleted = () => {
@@ -69,6 +71,7 @@ export const Login = () => {
             Login
           </Typography>
         </Grid>
+        {error && <Error errorMessage={error.message} />}
         <Grid item xs={12}>
           <FormControl fullWidth>
             <TextField

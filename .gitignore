@@ -8,6 +8,7 @@ __pycache__/
 local_settings.py
 *.sqlite3
 media
+frontend/build/*
 
 # don't track virtualenv, ever!
 
