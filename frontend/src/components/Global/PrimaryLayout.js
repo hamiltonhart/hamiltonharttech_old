@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "@reach/router";
 
-import { makeStyles, Paper, Grid, Typography, Button } from "@material-ui/core";
+import { makeStyles, Paper, Divider } from "@material-ui/core";
 import { HHTLogo } from "../../svg/HHTLogo";
 
 const useStyles = makeStyles((theme) => ({
@@ -22,16 +22,17 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     alignItems: "center",
     position: "relative",
-    margin: "10px 15px 15px 15px",
-    borderRadius: "40px",
+    margin: "0px 0px 15px 0px",
     padding: "10px 20px",
     backgroundColor: "transparent",
-    boxShadow: theme.shadows[2],
   },
   mainDiv: {
     maxWidth: theme.breakpoints.values.xl,
     marginLeft: "auto",
     marginRight: "auto",
+  },
+  divider: {
+    backgroundColor: theme.palette.primary.main,
   },
 }));
 
