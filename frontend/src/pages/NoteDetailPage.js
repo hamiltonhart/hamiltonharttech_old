@@ -21,9 +21,16 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: theme.spacing(1),
   },
   subheading: {
+    maxWidth: "600px",
     padding: theme.spacing(1),
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
+    marginLeft: "auto",
+    marginRight: "auto",
+    borderRadius: "10px",
+    borderColor: theme.palette.primary.main,
+    borderStyle: "solid",
+    borderWidth: "2px",
     fontStyle: "italic",
     backgroundColor: theme.palette.primary.main,
   },
@@ -141,9 +148,10 @@ export const NoteDetailPage = ({ noteId }) => {
                     <Button
                       className={classes.button}
                       color="primary"
-                      variant="outlined"
+                      variant="contained"
                       size="large"
                       onClick={editToggle}
+                      disabled={deleteActive}
                     >
                       Edit
                     </Button>

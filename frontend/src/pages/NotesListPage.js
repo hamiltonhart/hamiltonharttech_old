@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: theme.spacing(2),
   },
   heading: {
-    margin: "20px 0 20px 0",
+    margin: "0px 0 20px 0",
   },
   listItem: {
     marginTop: theme.spacing(2),

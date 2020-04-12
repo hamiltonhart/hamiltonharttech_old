@@ -22,12 +22,13 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     alignItems: "center",
     position: "relative",
-    margin: "0px 0px 15px 0px",
+    margin: "0px 0px 10px 0px",
     padding: "10px 20px",
     backgroundColor: "transparent",
   },
   mainDiv: {
     maxWidth: theme.breakpoints.values.xl,
+    paddingTop: "30px",
     marginLeft: "auto",
     marginRight: "auto",
   },
@@ -46,6 +47,7 @@ export const PrimaryLayout = ({ children }) => {
             <HHTLogo classes={classes.logo} />
           </Link>
         </div>
+        <Divider className={classes.divider} />
         <div className={classes.mainDiv}>{children}</div>
       </Paper>
     </>
