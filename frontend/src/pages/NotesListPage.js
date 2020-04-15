@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "@reach/router";
-import { Error, Loading } from "../components/Global";
+import { Error, Loading, SearchNotes } from "../components/Global";
 import { NoteListItem } from "../components/Notes";
 
 import {
@@ -29,16 +29,31 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
   },
-  createButton: {
+  sectionHeading: {
     display: "flex",
-    justifyContent: "flex-end",
-    margin: "0 0 20px 0",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "0 20px 20px 20px",
+    [theme.breakpoints.up("sm")]: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "end",
+    },
+  },
+  createButton: {
+    marginBottom: theme.spacing(2),
+    [theme.breakpoints.up("sm")]: {
+      marginBottom: "0",
+    },
   },
 }));
 
 export const NotesListPage = () => {
   const { data, loading, error } = useQuery(NOTES_QUERY);
   const { data: loggedInData, error: loggedInError } = useQuery(IS_LOGGED_IN);
+  const [searchValue, setSearchValue] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
   const classes = useStyles();
   const theme = useTheme();
@@ -52,9 +67,10 @@ export const NotesListPage = () => {
       <div className={classes.listContainer}>
         <Grid container spacing={2}>
           {loggedInError && <Error errorMessage={loggedInError.message} />}
-          {loggedInData && loggedInData.isLoggedIn && (
-            <Grid className={classes.createButton} item xs={12}>
+          <Grid className={classes.sectionHeading} item xs={12}>
+            {loggedInData && loggedInData.isLoggedIn && (
               <Button
+                className={classes.createButton}
                 color="primary"
                 variant="contained"
                 size="large"
@@ -64,8 +80,15 @@ export const NotesListPage = () => {
               >
                 Add Note
               </Button>
-            </Grid>
-          )}
+            )}
+            <SearchNotes
+              fullWidth={!isSmall}
+              data={data}
+              setSearchResults={setSearchResults}
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+            />
+          </Grid>
 
           {loading && (
             <Grid item xs={12}>
@@ -73,16 +96,27 @@ export const NotesListPage = () => {
             </Grid>
           )}
           {error && <Error errorMessage={error.message} />}
+          {data && searchValue && searchResults.length < 1 && (
+            <Grid item xs={12}>
+              <Typography
+                variant="h5"
+                align="center"
+              >{`No results for '${searchValue}'...`}</Typography>
+            </Grid>
+          )}
           {data &&
-            data.notes.map((note) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
-                <NoteListItem
-                  key={note.id}
-                  note={note}
-                  className={classes.listItem}
-                />
-              </Grid>
-            ))}
+            (searchResults.length > 0 && searchValue != ""
+              ? searchResults.map((note) => (
+                  <Grid key={note.id} item xs={12} sm={6} md={4} lg={3} xl={2}>
+                    <NoteListItem note={note} className={classes.listItem} />
+                  </Grid>
+                ))
+              : data.notes.map((note) => (
+                  <Grid key={note.id} item xs={12} sm={6} md={4} lg={3} xl={2}>
+                    <NoteListItem note={note} className={classes.listItem} />
+                  </Grid>
+                )))}
+          {console.log(searchResults)}
         </Grid>
       </div>
     </>
