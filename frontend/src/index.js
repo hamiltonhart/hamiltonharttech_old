@@ -13,8 +13,8 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 
 const cache = new InMemoryCache();
 
-// const uri = "https://hhtech.herokuapp.com/graphql/";
-const uri = "http://localhost:8000/graphql/";
+const uri = "https://hhtech.herokuapp.com/graphql/";
+// const uri = "http://localhost:8000/graphql/";
 
 export const client = new ApolloClient({
   cache,
